@@ -58,4 +58,66 @@ label {
   background-color: #fff;
 }
 
+.questions {
+  position: absolute;
+  top: 1%;
+  left: 2%;
+}
+
+.questions p, ul {
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.questions p {
+  opacity: 0;
+  background-color: #000;
+  padding: .5rem;
+}
+
+.questions ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: inline-block;
+}
+
+.questions ul li {
+  cursor: pointer;
+  background-color: #000;
+  padding: .5rem;
+  transform: rotateX(90deg);
+}
+
+.questions ul li span:nth-child(2) {
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  margin-bottom: -5px;
+  margin-right: .3rem;
+  display: inline-block;
+}
+
+.explanation {
+  text-align: right;
+  opacity: 0;
+  width: 90%;
+  position: absolute;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.explanation button {
+  font-size: 1.4rem;
+}
+
+.explanation .text-wrapper p {
+  color: #fff;
+  text-align: left;
+  background-color: #000;
+  padding: .8rem;
+  font-size: 1.6rem;
+}
+
 /*# sourceMappingURL=index.c92073ef.css.map */

@@ -18,9 +18,23 @@ const loadingManager = new THREE.LoadingManager();
 const startButton = document.querySelector(".header button");
 const title = document.querySelector(".header h1");
 
+let clicked = false;
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+const explanation = document.querySelector(".explanation");
+const nextQuestionBtn = document.querySelector(".explanation button");
+const question = document.querySelector(".questions p");
+
+const option1 = document.getElementById("option1");
+const option2 = document.getElementById("option2");
+const option3 = document.getElementById("option3");
+
+const option1Symbol = document.getElementById("a1-symbol");
+const option2Symbol = document.getElementById("a2-symbol");
+const option3Symbol = document.getElementById("a3-symbol");
 
 // Sets the color of the background
 renderer.setClearColor(0x94d8fb);
@@ -200,6 +214,38 @@ startButton.addEventListener("mousedown", () => {
         duration: 4,
       },
       0
+    )
+    .to(
+      question,
+      {
+        autoAlpha: 1,
+        duration: 0.2,
+      },
+      "+=0.7"
+    )
+    .to(
+      option1,
+      {
+        rotateX: 0,
+        duration: 0.2,
+      },
+      "+=2.4"
+    )
+    .to(
+      option2,
+      {
+        rotateX: 0,
+        duration: 0.2,
+      },
+      "+=2.5"
+    )
+    .to(
+      option3,
+      {
+        rotateX: 0,
+        duration: 0.2,
+      },
+      "+=2.5"
     );
 });
 
@@ -237,6 +283,31 @@ loader.load("./assets/arrow.glb", (glb) => {
   createArrow(new THREE.Vector3(93.599, 2, -70.83), Math.PI);
   createArrow(new THREE.Vector3(-88.88, 2, -160.78), Math.PI);
 });
+
+function showAnswerSymbol(opt1, opt2, opt3) {
+  option1Symbol.style.backgroundImage = `url('./assets/symbols/${opt1}.png')`;
+  option2Symbol.style.backgroundImage = `url('./assets/symbols/${opt2}.png')`;
+  option3Symbol.style.backgroundImage = `url('./assets/symbols/${opt3}.png')`;
+}
+
+function chooseAnswer(option) {
+  if (!clicked) {
+    showAnswerSymbol("correct", "incorrect", "incorrect");
+    option.style.backgroundColor = "white";
+    option.style.color = "black";
+
+    gsap.to(explanation, {
+      autoAlpha: 1,
+      y: "-=10",
+      duration: 0.5,
+    });
+    clicked = true;
+  }
+}
+
+option1.addEventListener("click", chooseAnswer.bind(null, option1));
+option2.addEventListener("click", chooseAnswer.bind(null, option2));
+option3.addEventListener("click", chooseAnswer.bind(null, option3));
 
 const time = new YUKA.Time();
 
