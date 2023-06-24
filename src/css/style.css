@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap");
 body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
@@ -29,4 +28,32 @@ body {
 label {
   color: white;
   font-size: 2rem;
+}
+
+.header {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 100;
+}
+
+.header h1 {
+  font-family: "Montserrat";
+  font-weight: 900;
+  font-size: 3.5rem;
+}
+
+.header button {
+  font-size: 1.6rem;
+  background-color: #000;
+  color: #fff;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.header button:hover {
+  background-color: #fff;
+  color: #000;
 }

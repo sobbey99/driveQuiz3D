@@ -574,9 +574,11 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"goJYj":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _three = require("three");
 var _yuka = require("yuka");
 var _gsap = require("gsap");
+var _gsapDefault = parcelHelpers.interopDefault(_gsap);
 var _gltfloader = require("three/examples/jsm/loaders/GLTFLoader");
 var _dracoloader = require("three/examples/jsm/loaders/DRACOLoader");
 var _skeletonUtils = require("three/examples/jsm/utils/SkeletonUtils");
@@ -585,6 +587,8 @@ const entityManager = new _yuka.EntityManager();
 const progressBar = document.getElementById("progress-bar");
 const progressBarContainer = document.querySelector(".progress-bar-container");
 const loadingManager = new _three.LoadingManager();
+const startButton = document.querySelector(".header button");
+const title = document.querySelector(".header h1");
 const renderer = new _three.WebGLRenderer({
     antialias: true
 });
@@ -676,6 +680,24 @@ loader.load("./assets/blue.glb", (glb)=>{
     const v4 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[3], entityManager, Math.PI / 2);
     const v7 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[4], entityManager, Math.PI);
 });
+startButton.addEventListener("mousedown", ()=>{
+    const tl = (0, _gsapDefault.default).timeline();
+    tl.to(startButton, {
+        autoAlpha: 0,
+        y: "-=20",
+        duration: 0.5
+    }).to(title, {
+        autoAlpha: 0,
+        y: "-=20",
+        duration: 1
+    }, 0).to(camera.position, {
+        z: 144,
+        duration: 4
+    }).to(camera.rotation, {
+        x: -0.4,
+        duration: 4
+    }, 0);
+});
 const time = new _yuka.Time();
 function animate() {
     const delta = time.update().getDelta();
@@ -689,7 +711,7 @@ window.addEventListener("resize", function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-},{"three":"ktPTu","yuka":"ead4k","gsap":"fPSuC","three/examples/jsm/loaders/GLTFLoader":"dVRsF","three/examples/jsm/loaders/DRACOLoader":"lkdU4","three/examples/jsm/utils/SkeletonUtils":"5hk7d","./constants":"itKcQ"}],"ktPTu":[function(require,module,exports) {
+},{"three":"ktPTu","yuka":"ead4k","gsap":"fPSuC","three/examples/jsm/loaders/GLTFLoader":"dVRsF","three/examples/jsm/loaders/DRACOLoader":"lkdU4","three/examples/jsm/utils/SkeletonUtils":"5hk7d","./constants":"itKcQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ktPTu":[function(require,module,exports) {
 /**
  * @license
  * Copyright 2010-2023 Three.js Authors

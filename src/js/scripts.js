@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import * as YUKA from "yuka";
-import * as gsap from "gsap";
+import gsap from "gsap";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
@@ -14,6 +14,9 @@ const entityManager = new YUKA.EntityManager();
 const progressBar = document.getElementById("progress-bar");
 const progressBarContainer = document.querySelector(".progress-bar-container");
 const loadingManager = new THREE.LoadingManager();
+
+const startButton = document.querySelector(".header button");
+const title = document.querySelector(".header h1");
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -167,6 +170,37 @@ loader.load("./assets/blue.glb", (glb) => {
     Math.PI / 2
   );
   const v7 = createCarV(model, BLUEVEHICLESPATHS[4], entityManager, Math.PI);
+});
+
+startButton.addEventListener("mousedown", () => {
+  const tl = gsap.timeline();
+
+  tl.to(startButton, {
+    autoAlpha: 0,
+    y: "-=20",
+    duration: 0.5,
+  })
+    .to(
+      title,
+      {
+        autoAlpha: 0,
+        y: "-=20",
+        duration: 1,
+      },
+      0
+    )
+    .to(camera.position, {
+      z: 144,
+      duration: 4,
+    })
+    .to(
+      camera.rotation,
+      {
+        x: -0.4,
+        duration: 4,
+      },
+      0
+    );
 });
 
 const time = new YUKA.Time();
