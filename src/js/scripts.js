@@ -8,6 +8,7 @@ import {
   YELLOWVEHICLESPATHS,
   BLUEVEHICLESPATHS,
   REDVEHICLESPATHS,
+  ANSWERSTEXT,
 } from "./constants";
 
 const entityManager = new YUKA.EntityManager();
@@ -19,6 +20,9 @@ const startButton = document.querySelector(".header button");
 const title = document.querySelector(".header h1");
 
 let clicked = false;
+let questionNumber = 1;
+let cameraX = 3;
+let cameraZ = 144;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -35,6 +39,10 @@ const option3 = document.getElementById("option3");
 const option1Symbol = document.getElementById("a1-symbol");
 const option2Symbol = document.getElementById("a2-symbol");
 const option3Symbol = document.getElementById("a3-symbol");
+
+const option1Text = document.getElementById("a1-text");
+const option2Text = document.getElementById("a2-text");
+const option3Text = document.getElementById("a3-text");
 
 // Sets the color of the background
 renderer.setClearColor(0x94d8fb);
@@ -316,7 +324,140 @@ function changeColors() {
   option2.style.color = "white";
   option3.style.backgroundColor = "black";
   option3.style.color = "white";
+
+  option1Symbol.style.backgroundImage = ``;
+  option2Symbol.style.backgroundImage = ``;
+  option3Symbol.style.backgroundImage = ``;
 }
+
+function changeOptionsText(qtion, opt1, opt2, opt3) {
+  question.textContent = qtion;
+  option1Text.textContent = opt1;
+  option2Text.textContent = opt2;
+  option3Text.textContent = opt3;
+}
+
+nextQuestionBtn.addEventListener("click", () => {
+  questionNumber++;
+
+  switch (questionNumber) {
+    case 2:
+      cameraZ = 51;
+      break;
+    case 3:
+      cameraX = 100;
+      break;
+    case 4:
+      cameraZ = -45;
+      break;
+    case 5:
+      cameraX = 4;
+      break;
+    case 6:
+      cameraZ = -145;
+      break;
+    case 7:
+      cameraX = -91;
+      cameraZ = -140;
+      nextQuestionBtn.disabled = true;
+      break;
+
+    default:
+      break;
+  }
+
+  const tl = gsap.timeline();
+  tl.to(camera.position, {
+    x: cameraX,
+    z: cameraZ,
+    duration: 4,
+  })
+    .to(
+      question,
+      {
+        autoAlpha: 0,
+        duration: 0.2,
+      },
+      0
+    )
+    .to(
+      explanation,
+      {
+        autoAlpha: 0,
+        y: "+=10",
+        duration: 0.5,
+      },
+      0
+    )
+    .to(
+      option1,
+      {
+        rotateX: 90,
+        duration: 0.2,
+      },
+      "-=3.7"
+    )
+    .to(
+      option2,
+      {
+        rotateX: 90,
+        duration: 0.2,
+      },
+      "-=3.5"
+    )
+    .to(
+      option3,
+      {
+        rotateX: 90,
+        duration: 0.2,
+        onComplete: function () {
+          changeColors();
+          changeOptionsText(
+            ANSWERSTEXT[questionNumber - 1].question,
+            ANSWERSTEXT[questionNumber - 1].answer1,
+            ANSWERSTEXT[questionNumber - 1].answer2,
+            ANSWERSTEXT[questionNumber - 1].answer3
+          );
+        },
+      },
+      "-=3.3"
+    )
+    .to(
+      question,
+      {
+        autoAlpha: 1,
+        duration: 0.2,
+      },
+      "-=0.5"
+    )
+    .to(
+      option1,
+      {
+        rotateX: 0,
+        duration: 0.2,
+      },
+      "+=2.5"
+    )
+    .to(
+      option2,
+      {
+        rotateX: 0,
+        duration: 0.2,
+      },
+      "+=2.5"
+    )
+    .to(
+      option3,
+      {
+        rotateX: 0,
+        duration: 0.2,
+        onComplete: function () {
+          clicked = false;
+        },
+      },
+      "+=2.5"
+    );
+});
 
 const time = new YUKA.Time();
 

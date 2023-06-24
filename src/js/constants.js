@@ -114,4 +114,54 @@ blueV7.add(new Vector3(-88.88, 0.3, -160.78));
 blueV7.add(new Vector3(-89, 0.3, -192.14));
 BLUEVEHICLESPATHS.push(blueV7);
 
-export { YELLOWVEHICLESPATHS, BLUEVEHICLESPATHS, REDVEHICLESPATHS };
+const ANSWERSTEXT = [
+  {
+    question: "Q1: in which order may the vehicles proceed?",
+    answer1: "Blue, yellow, red",
+    answer2: "Red, yellow, blue",
+    answer3: "Red, blue, yellow",
+  },
+  {
+    question: "Q2: which vehicle goes last?",
+    answer1: "The red vehicle",
+    answer2: "The blue vehicle",
+    answer3: "The yellow vehicle",
+  },
+  {
+    question: "Q3: which vehicle goes first?",
+    answer1: "The blue vehicle",
+    answer2: "The yellow vehicle",
+    answer3: "The red vehicle",
+  },
+  {
+    question: "Q4: when should the red vehicle proceed?",
+    answer1: "Before the yellow vehicle",
+    answer2: "Before the blue vehicle",
+    answer3: "After both vehicles",
+  },
+  {
+    question: "Q5: which vehicle must give way?",
+    answer1: "The yellow vehicle",
+    answer2: "The red vehicle",
+    answer3: "Both proceed at the same time",
+  },
+  {
+    question: "Q6: which vehicle must give way?",
+    answer1: "The yellow vehicle",
+    answer2: "The red vehicle",
+    answer3: "Both proceed at the same time",
+  },
+  {
+    question: "Q7: which vehicles proceed at the same time?",
+    answer1: "The yellow and blue vehicles",
+    answer2: "The yellow and red vehicles",
+    answer3: "The blue and red vehicles",
+  },
+];
+
+export {
+  YELLOWVEHICLESPATHS,
+  BLUEVEHICLESPATHS,
+  REDVEHICLESPATHS,
+  ANSWERSTEXT,
+};

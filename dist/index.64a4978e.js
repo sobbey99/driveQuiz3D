@@ -590,6 +590,9 @@ const loadingManager = new _three.LoadingManager();
 const startButton = document.querySelector(".header button");
 const title = document.querySelector(".header h1");
 let clicked = false;
+let questionNumber = 1;
+let cameraX = 3;
+let cameraZ = 144;
 const renderer = new _three.WebGLRenderer({
     antialias: true
 });
@@ -604,6 +607,9 @@ const option3 = document.getElementById("option3");
 const option1Symbol = document.getElementById("a1-symbol");
 const option2Symbol = document.getElementById("a2-symbol");
 const option3Symbol = document.getElementById("a3-symbol");
+const option1Text = document.getElementById("a1-text");
+const option2Text = document.getElementById("a2-text");
+const option3Text = document.getElementById("a3-text");
 // Sets the color of the background
 renderer.setClearColor(0x94d8fb);
 const scene = new _three.Scene();
@@ -771,6 +777,91 @@ function chooseAnswer(option) {
 option1.addEventListener("click", chooseAnswer.bind(null, option1));
 option2.addEventListener("click", chooseAnswer.bind(null, option2));
 option3.addEventListener("click", chooseAnswer.bind(null, option3));
+function changeColors() {
+    option1.style.backgroundColor = "black";
+    option1.style.color = "white";
+    option2.style.backgroundColor = "black";
+    option2.style.color = "white";
+    option3.style.backgroundColor = "black";
+    option3.style.color = "white";
+    option1Symbol.style.backgroundImage = ``;
+    option2Symbol.style.backgroundImage = ``;
+    option3Symbol.style.backgroundImage = ``;
+}
+function changeOptionsText(qtion, opt1, opt2, opt3) {
+    question.textContent = qtion;
+    option1Text.textContent = opt1;
+    option2Text.textContent = opt2;
+    option3Text.textContent = opt3;
+}
+nextQuestionBtn.addEventListener("click", ()=>{
+    questionNumber++;
+    switch(questionNumber){
+        case 2:
+            cameraZ = 51;
+            break;
+        case 3:
+            cameraX = 100;
+            break;
+        case 4:
+            cameraZ = -45;
+            break;
+        case 5:
+            cameraX = 4;
+            break;
+        case 6:
+            cameraZ = -145;
+            break;
+        case 7:
+            cameraX = -91;
+            cameraZ = -140;
+            nextQuestionBtn.disabled = true;
+            break;
+        default:
+            break;
+    }
+    const tl = (0, _gsapDefault.default).timeline();
+    tl.to(camera.position, {
+        x: cameraX,
+        z: cameraZ,
+        duration: 4
+    }).to(question, {
+        autoAlpha: 0,
+        duration: 0.2
+    }, 0).to(explanation, {
+        autoAlpha: 0,
+        y: "+=10",
+        duration: 0.5
+    }, 0).to(option1, {
+        rotateX: 90,
+        duration: 0.2
+    }, "-=3.7").to(option2, {
+        rotateX: 90,
+        duration: 0.2
+    }, "-=3.5").to(option3, {
+        rotateX: 90,
+        duration: 0.2,
+        onComplete: function() {
+            changeColors();
+            changeOptionsText((0, _constants.ANSWERSTEXT)[questionNumber - 1].question, (0, _constants.ANSWERSTEXT)[questionNumber - 1].answer1, (0, _constants.ANSWERSTEXT)[questionNumber - 1].answer2, (0, _constants.ANSWERSTEXT)[questionNumber - 1].answer3);
+        }
+    }, "-=3.3").to(question, {
+        autoAlpha: 1,
+        duration: 0.2
+    }, "-=0.5").to(option1, {
+        rotateX: 0,
+        duration: 0.2
+    }, "+=2.5").to(option2, {
+        rotateX: 0,
+        duration: 0.2
+    }, "+=2.5").to(option3, {
+        rotateX: 0,
+        duration: 0.2,
+        onComplete: function() {
+            clicked = false;
+        }
+    }, "+=2.5");
+});
 const time = new _yuka.Time();
 function animate() {
     const delta = time.update().getDelta();
@@ -51185,6 +51276,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "YELLOWVEHICLESPATHS", ()=>YELLOWVEHICLESPATHS);
 parcelHelpers.export(exports, "BLUEVEHICLESPATHS", ()=>BLUEVEHICLESPATHS);
 parcelHelpers.export(exports, "REDVEHICLESPATHS", ()=>REDVEHICLESPATHS);
+parcelHelpers.export(exports, "ANSWERSTEXT", ()=>ANSWERSTEXT);
 var _yuka = require("yuka");
 const YELLOWVEHICLESPATHS = [];
 const BLUEVEHICLESPATHS = [];
@@ -51278,6 +51370,50 @@ const blueV7 = new (0, _yuka.Path)();
 blueV7.add(new (0, _yuka.Vector3)(-88.88, 0.3, -160.78));
 blueV7.add(new (0, _yuka.Vector3)(-89, 0.3, -192.14));
 BLUEVEHICLESPATHS.push(blueV7);
+const ANSWERSTEXT = [
+    {
+        question: "Q1: in which order may the vehicles proceed?",
+        answer1: "Blue, yellow, red",
+        answer2: "Red, yellow, blue",
+        answer3: "Red, blue, yellow"
+    },
+    {
+        question: "Q2: which vehicle goes last?",
+        answer1: "The red vehicle",
+        answer2: "The blue vehicle",
+        answer3: "The yellow vehicle"
+    },
+    {
+        question: "Q3: which vehicle goes first?",
+        answer1: "The blue vehicle",
+        answer2: "The yellow vehicle",
+        answer3: "The red vehicle"
+    },
+    {
+        question: "Q4: when should the red vehicle proceed?",
+        answer1: "Before the yellow vehicle",
+        answer2: "Before the blue vehicle",
+        answer3: "After both vehicles"
+    },
+    {
+        question: "Q5: which vehicle must give way?",
+        answer1: "The yellow vehicle",
+        answer2: "The red vehicle",
+        answer3: "Both proceed at the same time"
+    },
+    {
+        question: "Q6: which vehicle must give way?",
+        answer1: "The yellow vehicle",
+        answer2: "The red vehicle",
+        answer3: "Both proceed at the same time"
+    },
+    {
+        question: "Q7: which vehicles proceed at the same time?",
+        answer1: "The yellow and blue vehicles",
+        answer2: "The yellow and red vehicles",
+        answer3: "The blue and red vehicles"
+    }
+];
 
 },{"yuka":"ead4k","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["4FhkU","goJYj"], "goJYj", "parcelRequire6fcf")
 
