@@ -698,6 +698,36 @@ startButton.addEventListener("mousedown", ()=>{
         duration: 4
     }, 0);
 });
+loader.load("./assets/arrow.glb", (glb)=>{
+    const model = glb.scene;
+    function createArrow(position, yRotation = 0) {
+        const arrow = _skeletonUtils.clone(model);
+        arrow.position.copy(position);
+        arrow.rotation.y = yRotation;
+        scene.add(arrow);
+    }
+    createArrow(new _three.Vector3(5.91, 2, 125.92), Math.PI);
+    createArrow(new _three.Vector3(6.21, 2, 30.19), 0.5 * Math.PI);
+    createArrow(new _three.Vector3(93.03, 2, 24.5), Math.PI);
+    createArrow(new _three.Vector3(102.5, 2, -66), -0.5 * Math.PI);
+    createArrow(new _three.Vector3(11.86, 2, -75.86), Math.PI);
+    createArrow(new _three.Vector3(5.97, 2, -161.04), -0.5 * Math.PI);
+    createArrow(new _three.Vector3(-82.82, 2, -171.17), -Math.PI / 2);
+    //Arrows for red cars
+    createArrow(new _three.Vector3(1.38, 2, 109.32), 0.5 * Math.PI);
+    createArrow(new _three.Vector3(1.13, 2, 14.01), 0.5 * Math.PI);
+    createArrow(new _three.Vector3(107.5, 2, 20.33), Math.PI);
+    createArrow(new _three.Vector3(97.45, 2, -81.35));
+    createArrow(new _three.Vector3(-3.55, 2, -71.24), Math.PI);
+    createArrow(new _three.Vector3(1.45, 2, -175.84), -0.5 * Math.PI);
+    createArrow(new _three.Vector3(-98.74, 2, -166.74), Math.PI / 2);
+    //Arrows for blue cars
+    createArrow(new _three.Vector3(-3.55, 2, 119.5), 0.5 * Math.PI);
+    createArrow(new _three.Vector3(-4.08, 2, 24.64), 0.5 * Math.PI);
+    createArrow(new _three.Vector3(98.08, 2, 14.95));
+    createArrow(new _three.Vector3(93.599, 2, -70.83), Math.PI);
+    createArrow(new _three.Vector3(-88.88, 2, -160.78), Math.PI);
+});
 const time = new _yuka.Time();
 function animate() {
     const delta = time.update().getDelta();
