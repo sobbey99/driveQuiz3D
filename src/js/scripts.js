@@ -309,6 +309,15 @@ option1.addEventListener("click", chooseAnswer.bind(null, option1));
 option2.addEventListener("click", chooseAnswer.bind(null, option2));
 option3.addEventListener("click", chooseAnswer.bind(null, option3));
 
+function changeColors() {
+  option1.style.backgroundColor = "black";
+  option1.style.color = "white";
+  option2.style.backgroundColor = "black";
+  option2.style.color = "white";
+  option3.style.backgroundColor = "black";
+  option3.style.color = "white";
+}
+
 const time = new YUKA.Time();
 
 function animate() {
