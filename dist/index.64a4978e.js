@@ -589,7 +589,7 @@ const progressBarContainer = document.querySelector(".progress-bar-container");
 const loadingManager = new _three.LoadingManager();
 const startButton = document.querySelector(".header button");
 const title = document.querySelector(".header h1");
-let clicked = false;
+let clicked = true;
 let questionNumber = 1;
 let cameraX = 3;
 let cameraZ = 144;
@@ -602,6 +602,8 @@ const blinkMat = new _three.MeshBasicMaterial({
     color: 0xff8300
 });
 const blinkMesh = new _three.Mesh(blinkGeo, blinkMat);
+const score = document.querySelector(".score span");
+let scoreVal = 0;
 const renderer = new _three.WebGLRenderer({
     antialias: true
 });
@@ -757,6 +759,7 @@ startButton.addEventListener("mousedown", ()=>{
         duration: 0.2,
         onComplete: function() {
             (0, _constants.AUDIOS)[questionNumber - 1].answer3.play();
+            clicked = false;
         }
     }, "+=2.5");
 });
@@ -821,40 +824,70 @@ function chooseAnswer(option) {
                 animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
                 animateCar(5000, redCars[carToAnimate], (0, _constants.WHEELS).redCar, true);
                 animateCar(0, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar);
+                if (option.id === "option1") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             case 1:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
                 animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
                 animateCar(5000, redCars[carToAnimate], (0, _constants.WHEELS).redCar, true);
                 animateCar(0, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar);
+                if (option.id === "option1") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             case 2:
                 showAnswerSymbol("incorrect", "incorrect", "correct");
                 animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
                 animateCar(0, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
                 animateCar(5000, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar, true);
+                if (option.id === "option3") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             case 3:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
                 animateCar(5000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar, true);
                 animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
                 animateCar(0, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar);
+                if (option.id === "option1") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             case 4:
                 showAnswerSymbol("incorrect", "correct", "incorrect");
                 animateCar(0, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
                 animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar, true);
+                // animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
+                if (option.id === "option2") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             case 5:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
                 animateCar(0, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar, true);
                 animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
+                // animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
+                if (option.id === "option1") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             case 6:
                 showAnswerSymbol("incorrect", "correct", "incorrect");
                 animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar, true);
                 animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
                 animateCar(0, blueCars[carToAnimate - 2], (0, _constants.WHEELS).blueCar);
+                if (option.id === "option2") {
+                    scoreVal++;
+                    score.innerText = scoreVal;
+                }
                 break;
             default:
                 break;
