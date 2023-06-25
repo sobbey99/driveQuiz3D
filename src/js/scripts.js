@@ -11,6 +11,8 @@ import {
   ANSWERSTEXT,
   WHEELS,
   BLINKINGLIGHTS,
+  LISTENER,
+  AUDIOS,
 } from "./constants";
 
 const entityManager = new YUKA.EntityManager();
@@ -101,6 +103,8 @@ loader.load("./assets/terrain.glb", (glb) => {
 // Camera positioning
 camera.position.set(3, 10, 218);
 camera.lookAt(scene.position);
+
+camera.add(LISTENER);
 
 function sync(entity, renderComponent) {
   renderComponent.matrix.copy(entity.worldMatrix);
@@ -303,6 +307,9 @@ startButton.addEventListener("mousedown", () => {
       {
         autoAlpha: 1,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].question.play();
+        },
       },
       "+=0.7"
     )
@@ -311,6 +318,9 @@ startButton.addEventListener("mousedown", () => {
       {
         rotateX: 0,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].answer1.play();
+        },
       },
       "+=2.4"
     )
@@ -319,6 +329,9 @@ startButton.addEventListener("mousedown", () => {
       {
         rotateX: 0,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].answer2.play();
+        },
       },
       "+=2.5"
     )
@@ -327,6 +340,9 @@ startButton.addEventListener("mousedown", () => {
       {
         rotateX: 0,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].answer3.play();
+        },
       },
       "+=2.5"
     );
@@ -572,6 +588,9 @@ nextQuestionBtn.addEventListener("click", () => {
       {
         autoAlpha: 1,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].question.play();
+        },
       },
       "-=0.5"
     )
@@ -580,6 +599,9 @@ nextQuestionBtn.addEventListener("click", () => {
       {
         rotateX: 0,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].answer1.play();
+        },
       },
       "+=2.5"
     )
@@ -588,6 +610,9 @@ nextQuestionBtn.addEventListener("click", () => {
       {
         rotateX: 0,
         duration: 0.2,
+        onComplete: function () {
+          AUDIOS[questionNumber - 1].answer2.play();
+        },
       },
       "+=2.5"
     )
@@ -598,6 +623,7 @@ nextQuestionBtn.addEventListener("click", () => {
         duration: 0.2,
         onComplete: function () {
           clicked = false;
+          AUDIOS[questionNumber - 1].answer3.play();
         },
       },
       "+=2.5"

@@ -650,6 +650,7 @@ loader.load("./assets/terrain.glb", (glb)=>{
 // Camera positioning
 camera.position.set(3, 10, 218);
 camera.lookAt(scene.position);
+camera.add((0, _constants.LISTENER));
 function sync(entity, renderComponent) {
     renderComponent.matrix.copy(entity.worldMatrix);
 }
@@ -735,16 +736,28 @@ startButton.addEventListener("mousedown", ()=>{
         duration: 4
     }, 0).to(question, {
         autoAlpha: 1,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].question.play();
+        }
     }, "+=0.7").to(option1, {
         rotateX: 0,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].answer1.play();
+        }
     }, "+=2.4").to(option2, {
         rotateX: 0,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].answer2.play();
+        }
     }, "+=2.5").to(option3, {
         rotateX: 0,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].answer3.play();
+        }
     }, "+=2.5");
 });
 loader.load("./assets/arrow.glb", (glb)=>{
@@ -929,18 +942,28 @@ nextQuestionBtn.addEventListener("click", ()=>{
         }
     }, "-=3.3").to(question, {
         autoAlpha: 1,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].question.play();
+        }
     }, "-=0.5").to(option1, {
         rotateX: 0,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].answer1.play();
+        }
     }, "+=2.5").to(option2, {
         rotateX: 0,
-        duration: 0.2
+        duration: 0.2,
+        onComplete: function() {
+            (0, _constants.AUDIOS)[questionNumber - 1].answer2.play();
+        }
     }, "+=2.5").to(option3, {
         rotateX: 0,
         duration: 0.2,
         onComplete: function() {
             clicked = false;
+            (0, _constants.AUDIOS)[questionNumber - 1].answer3.play();
         }
     }, "+=2.5");
 });
@@ -959,7 +982,7 @@ window.addEventListener("resize", function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-},{"three":"ktPTu","yuka":"ead4k","gsap":"fPSuC","three/examples/jsm/loaders/GLTFLoader":"dVRsF","three/examples/jsm/loaders/DRACOLoader":"lkdU4","three/examples/jsm/utils/SkeletonUtils":"5hk7d","./constants":"itKcQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ktPTu":[function(require,module,exports) {
+},{"three":"ktPTu","yuka":"ead4k","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","gsap":"fPSuC","three/examples/jsm/loaders/GLTFLoader":"dVRsF","three/examples/jsm/loaders/DRACOLoader":"lkdU4","three/examples/jsm/utils/SkeletonUtils":"5hk7d","./constants":"itKcQ"}],"ktPTu":[function(require,module,exports) {
 /**
  * @license
  * Copyright 2010-2023 Three.js Authors
@@ -51363,6 +51386,8 @@ parcelHelpers.export(exports, "REDVEHICLESPATHS", ()=>REDVEHICLESPATHS);
 parcelHelpers.export(exports, "ANSWERSTEXT", ()=>ANSWERSTEXT);
 parcelHelpers.export(exports, "WHEELS", ()=>WHEELS);
 parcelHelpers.export(exports, "BLINKINGLIGHTS", ()=>BLINKINGLIGHTS);
+parcelHelpers.export(exports, "LISTENER", ()=>LISTENER);
+parcelHelpers.export(exports, "AUDIOS", ()=>AUDIOS);
 var _yuka = require("yuka");
 var _three = require("three");
 const YELLOWVEHICLESPATHS = [];
@@ -51550,7 +51575,94 @@ const BLINKINGLIGHTS = {
         }
     }
 };
+const LISTENER = new (0, _three.AudioListener)();
+const audioLoader = new (0, _three.AudioLoader)();
+const AUDIOS = [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+];
+audioLoader.load("./assets/sounds/q1.mp3", function(buffer) {
+    AUDIOS[0].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q1a1.mp3", function(buffer) {
+    AUDIOS[0].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q1a2.mp3", function(buffer) {
+    AUDIOS[0].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q1a3.mp3", function(buffer) {
+    AUDIOS[0].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q2.mp3", function(buffer) {
+    AUDIOS[1].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q2a1.mp3", function(buffer) {
+    AUDIOS[1].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q2a2.mp3", function(buffer) {
+    AUDIOS[1].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q2a3.mp3", function(buffer) {
+    AUDIOS[1].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q3.mp3", function(buffer) {
+    AUDIOS[2].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q3a1.mp3", function(buffer) {
+    AUDIOS[2].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q3a2.mp3", function(buffer) {
+    AUDIOS[2].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q3a3.mp3", function(buffer) {
+    AUDIOS[2].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q4.mp3", function(buffer) {
+    AUDIOS[3].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q4a1.mp3", function(buffer) {
+    AUDIOS[3].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q4a2.mp3", function(buffer) {
+    AUDIOS[3].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q4a3.mp3", function(buffer) {
+    AUDIOS[3].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q5.mp3", function(buffer) {
+    AUDIOS[4].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+    AUDIOS[5].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q5a1.mp3", function(buffer) {
+    AUDIOS[4].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+    AUDIOS[5].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q5a2.mp3", function(buffer) {
+    AUDIOS[4].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+    AUDIOS[5].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q5a3.mp3", function(buffer) {
+    AUDIOS[4].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+    AUDIOS[5].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q7.mp3", function(buffer) {
+    AUDIOS[6].question = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q7a1.mp3", function(buffer) {
+    AUDIOS[6].answer1 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q7a2.mp3", function(buffer) {
+    AUDIOS[6].answer2 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
+audioLoader.load("./assets/sounds/q7a3.mp3", function(buffer) {
+    AUDIOS[6].answer3 = new (0, _three.Audio)(LISTENER).setBuffer(buffer);
+});
 
-},{"yuka":"ead4k","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","three":"ktPTu"}]},["4FhkU","goJYj"], "goJYj", "parcelRequire6fcf")
+},{"yuka":"ead4k","three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["4FhkU","goJYj"], "goJYj", "parcelRequire6fcf")
 
 //# sourceMappingURL=index.64a4978e.js.map

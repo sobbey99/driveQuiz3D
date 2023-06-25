@@ -211,6 +211,110 @@ const BLINKINGLIGHTS = {
   },
 };
 
+const LISTENER = new AudioListener();
+const audioLoader = new AudioLoader();
+const AUDIOS = [{}, {}, {}, {}, {}, {}, {}];
+
+audioLoader.load("./assets/sounds/q1.mp3", function (buffer) {
+  AUDIOS[0].question = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q1a1.mp3", function (buffer) {
+  AUDIOS[0].answer1 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q1a2.mp3", function (buffer) {
+  AUDIOS[0].answer2 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q1a3.mp3", function (buffer) {
+  AUDIOS[0].answer3 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q2.mp3", function (buffer) {
+  AUDIOS[1].question = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q2a1.mp3", function (buffer) {
+  AUDIOS[1].answer1 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q2a2.mp3", function (buffer) {
+  AUDIOS[1].answer2 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q2a3.mp3", function (buffer) {
+  AUDIOS[1].answer3 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q3.mp3", function (buffer) {
+  AUDIOS[2].question = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q3a1.mp3", function (buffer) {
+  AUDIOS[2].answer1 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q3a2.mp3", function (buffer) {
+  AUDIOS[2].answer2 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q3a3.mp3", function (buffer) {
+  AUDIOS[2].answer3 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q4.mp3", function (buffer) {
+  AUDIOS[3].question = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q4a1.mp3", function (buffer) {
+  AUDIOS[3].answer1 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q4a2.mp3", function (buffer) {
+  AUDIOS[3].answer2 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q4a3.mp3", function (buffer) {
+  AUDIOS[3].answer3 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q5.mp3", function (buffer) {
+  AUDIOS[4].question = new Audio(LISTENER).setBuffer(buffer);
+  AUDIOS[5].question = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q5a1.mp3", function (buffer) {
+  AUDIOS[4].answer1 = new Audio(LISTENER).setBuffer(buffer);
+  AUDIOS[5].answer1 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q5a2.mp3", function (buffer) {
+  AUDIOS[4].answer2 = new Audio(LISTENER).setBuffer(buffer);
+  AUDIOS[5].answer2 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q5a3.mp3", function (buffer) {
+  AUDIOS[4].answer3 = new Audio(LISTENER).setBuffer(buffer);
+  AUDIOS[5].answer3 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q7.mp3", function (buffer) {
+  AUDIOS[6].question = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q7a1.mp3", function (buffer) {
+  AUDIOS[6].answer1 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q7a2.mp3", function (buffer) {
+  AUDIOS[6].answer2 = new Audio(LISTENER).setBuffer(buffer);
+});
+
+audioLoader.load("./assets/sounds/q7a3.mp3", function (buffer) {
+  AUDIOS[6].answer3 = new Audio(LISTENER).setBuffer(buffer);
+});
+
 export {
   YELLOWVEHICLESPATHS,
   BLUEVEHICLESPATHS,
@@ -218,4 +322,6 @@ export {
   ANSWERSTEXT,
   WHEELS,
   BLINKINGLIGHTS,
+  LISTENER,
+  AUDIOS,
 };
