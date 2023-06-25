@@ -9,6 +9,8 @@ import {
   BLUEVEHICLESPATHS,
   REDVEHICLESPATHS,
   ANSWERSTEXT,
+  WHEELS,
+  BLINKINGLIGHTS,
 } from "./constants";
 
 const entityManager = new YUKA.EntityManager();
@@ -28,6 +30,10 @@ const yellowCars = [];
 const redCars = [];
 const blueCars = [];
 let carToAnimate = 0;
+
+const blinkGeo = new THREE.SphereGeometry(0.1);
+const blinkMat = new THREE.MeshBasicMaterial({ color: 0xff8300 });
+const blinkMesh = new THREE.Mesh(blinkGeo, blinkMat);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -100,7 +106,17 @@ function sync(entity, renderComponent) {
   renderComponent.matrix.copy(entity.worldMatrix);
 }
 
-function createCarV(model, path, entityManager, yRotation) {
+function createBlinkingLight(group, position) {
+  const bClone1 = blinkMesh.clone();
+  bClone1.position.copy(position.front);
+  group.add(bClone1);
+
+  const bClone2 = blinkMesh.clone();
+  bClone2.position.copy(position.back);
+  group.add(bClone2);
+}
+
+function createCarV(model, path, entityManager, yRotation, blinkingLight) {
   const group = new THREE.Group();
   scene.add(group);
   group.matrixAutoUpdate = false;
@@ -126,6 +142,10 @@ function createCarV(model, path, entityManager, yRotation) {
 
   v.rotation.fromEuler(0, yRotation, 0);
 
+  if (blinkingLight) {
+    createBlinkingLight(group, blinkingLight);
+  }
+
   const vehicleAll = {
     vehicle: v,
     modelGroup: car,
@@ -134,24 +154,44 @@ function createCarV(model, path, entityManager, yRotation) {
   return vehicleAll;
 }
 
-loader.load("./assets/SUV.glb", (glb) => {
+loader.load("./assets/SUV.glb", function (glb) {
   const model = glb.scene;
   const v1 = createCarV(model, YELLOWVEHICLESPATHS[0], entityManager, Math.PI);
-  const v2 = createCarV(model, YELLOWVEHICLESPATHS[1], entityManager, Math.PI);
+  const v2 = createCarV(
+    model,
+    YELLOWVEHICLESPATHS[1],
+    entityManager,
+    Math.PI,
+    BLINKINGLIGHTS.yellow.right
+  );
   const v3 = createCarV(
     model,
     YELLOWVEHICLESPATHS[2],
     entityManager,
-    Math.PI / 2
+    Math.PI / 2,
+    BLINKINGLIGHTS.yellow.left
   );
-  const v4 = createCarV(model, YELLOWVEHICLESPATHS[3], entityManager, Math.PI);
+  const v4 = createCarV(
+    model,
+    YELLOWVEHICLESPATHS[3],
+    entityManager,
+    Math.PI,
+    BLINKINGLIGHTS.yellow.left
+  );
   const v5 = createCarV(
     model,
     YELLOWVEHICLESPATHS[4],
     entityManager,
-    -Math.PI / 2
+    -Math.PI / 2,
+    BLINKINGLIGHTS.yellow.right
   );
-  const v6 = createCarV(model, YELLOWVEHICLESPATHS[5], entityManager, Math.PI);
+  const v6 = createCarV(
+    model,
+    YELLOWVEHICLESPATHS[5],
+    entityManager,
+    Math.PI,
+    BLINKINGLIGHTS.yellow.left
+  );
   const v7 = createCarV(
     model,
     YELLOWVEHICLESPATHS[6],
@@ -161,24 +201,49 @@ loader.load("./assets/SUV.glb", (glb) => {
   yellowCars.push(v1, v2, v3, v4, v5, v6, v7);
 });
 
-loader.load("./assets/red.glb", (glb) => {
+loader.load("./assets/red.glb", function (glb) {
   const model = glb.scene;
-  const v1 = createCarV(model, REDVEHICLESPATHS[0], entityManager, 0);
-  const v2 = createCarV(model, REDVEHICLESPATHS[1], entityManager, 0);
+  const v1 = createCarV(
+    model,
+    REDVEHICLESPATHS[0],
+    entityManager,
+    0,
+    BLINKINGLIGHTS.red.left
+  );
+  const v2 = createCarV(
+    model,
+    REDVEHICLESPATHS[1],
+    entityManager,
+    0,
+    BLINKINGLIGHTS.red.left
+  );
   const v3 = createCarV(
     model,
     REDVEHICLESPATHS[2],
     entityManager,
-    -Math.PI / 2
+    -Math.PI / 2,
+    BLINKINGLIGHTS.red.right
   );
   const v4 = createCarV(model, REDVEHICLESPATHS[3], entityManager, 0);
-  const v5 = createCarV(model, REDVEHICLESPATHS[4], entityManager, Math.PI / 2);
-  const v6 = createCarV(model, REDVEHICLESPATHS[5], entityManager, 0);
+  const v5 = createCarV(
+    model,
+    REDVEHICLESPATHS[4],
+    entityManager,
+    Math.PI / 2,
+    BLINKINGLIGHTS.red.left
+  );
+  const v6 = createCarV(
+    model,
+    REDVEHICLESPATHS[5],
+    entityManager,
+    0,
+    BLINKINGLIGHTS.red.right
+  );
   const v7 = createCarV(model, REDVEHICLESPATHS[6], entityManager, Math.PI / 2);
   redCars.push(v1, v2, v3, v4, v5, v6, v7);
 });
 
-loader.load("./assets/blue.glb", (glb) => {
+loader.load("./assets/blue.glb", function (glb) {
   const model = glb.scene;
   const v1 = createCarV(
     model,
@@ -197,7 +262,8 @@ loader.load("./assets/blue.glb", (glb) => {
     model,
     BLUEVEHICLESPATHS[3],
     entityManager,
-    Math.PI / 2
+    Math.PI / 2,
+    BLINKINGLIGHTS.blue.left
   );
   const v7 = createCarV(model, BLUEVEHICLESPATHS[4], entityManager, Math.PI);
   blueCars.push(v1, v2, v3, v4, v7);
@@ -311,6 +377,19 @@ function animateCar(delay, car, wheels, last) {
   setTimeout(() => {
     car.vehicle.steering.behaviors[1].active = true;
 
+    gsap.to(car.modelGroup.getObjectByName(wheels.frontRight).rotation, {
+      x: "+=60",
+      duration: 20,
+    });
+    gsap.to(car.modelGroup.getObjectByName(wheels.frontLeft).rotation, {
+      x: "+=60",
+      duration: 20,
+    });
+    gsap.to(car.modelGroup.getObjectByName(wheels.back).rotation, {
+      x: "+=60",
+      duration: 20,
+    });
+
     if (last) {
       carToAnimate++;
     }
@@ -322,45 +401,45 @@ function chooseAnswer(option) {
     switch (carToAnimate) {
       case 0:
         showAnswerSymbol("correct", "incorrect", "incorrect");
-        animateCar(3000, yellowCars[carToAnimate], null);
-        animateCar(5000, redCars[carToAnimate], null, true);
-        animateCar(0, blueCars[carToAnimate], null);
+        animateCar(3000, yellowCars[carToAnimate], WHEELS.yellowCar);
+        animateCar(5000, redCars[carToAnimate], WHEELS.redCar, true);
+        animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
         break;
       case 1:
         showAnswerSymbol("correct", "incorrect", "incorrect");
-        animateCar(3000, yellowCars[carToAnimate], null);
-        animateCar(5000, redCars[carToAnimate], null, true);
-        animateCar(0, blueCars[carToAnimate], null);
+        animateCar(3000, yellowCars[carToAnimate], WHEELS.yellowCar);
+        animateCar(5000, redCars[carToAnimate], WHEELS.redCar, true);
+        animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
         break;
       case 2:
         showAnswerSymbol("incorrect", "incorrect", "correct");
-        animateCar(3000, yellowCars[carToAnimate], null);
-        animateCar(0, redCars[carToAnimate], null);
-        animateCar(5000, blueCars[carToAnimate], null, true);
+        animateCar(3000, yellowCars[carToAnimate], WHEELS.yellowCar);
+        animateCar(0, redCars[carToAnimate], WHEELS.redCar);
+        animateCar(5000, blueCars[carToAnimate], WHEELS.blueCar, true);
         break;
       case 3:
         showAnswerSymbol("correct", "incorrect", "incorrect");
-        animateCar(5000, yellowCars[carToAnimate], null, true);
-        animateCar(3000, redCars[carToAnimate], null);
-        animateCar(0, blueCars[carToAnimate], null);
+        animateCar(5000, yellowCars[carToAnimate], WHEELS.yellowCar, true);
+        animateCar(3000, redCars[carToAnimate], WHEELS.redCar);
+        animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
         break;
       case 4:
         showAnswerSymbol("incorrect", "correct", "incorrect");
-        animateCar(0, yellowCars[carToAnimate], null);
-        animateCar(3000, redCars[carToAnimate], null, true);
-        // animateCar(0, blueCars[carToAnimate], null);
+        animateCar(0, yellowCars[carToAnimate], WHEELS.yellowCar);
+        animateCar(3000, redCars[carToAnimate], WHEELS.redCar, true);
+        // animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
         break;
       case 5:
         showAnswerSymbol("correct", "incorrect", "incorrect");
-        animateCar(0, yellowCars[carToAnimate], null, true);
-        animateCar(3000, redCars[carToAnimate], null);
-        // animateCar(0, blueCars[carToAnimate], null);
+        animateCar(0, yellowCars[carToAnimate], WHEELS.yellowCar, true);
+        animateCar(3000, redCars[carToAnimate], WHEELS.redCar);
+        // animateCar(0, blueCars[carToAnimate], WHEELS.blueCar);
         break;
       case 6:
         showAnswerSymbol("incorrect", "correct", "incorrect");
-        animateCar(3000, yellowCars[carToAnimate], null, true);
-        animateCar(3000, redCars[carToAnimate], null);
-        animateCar(0, blueCars[carToAnimate - 2], null);
+        animateCar(3000, yellowCars[carToAnimate], WHEELS.yellowCar, true);
+        animateCar(3000, redCars[carToAnimate], WHEELS.redCar);
+        animateCar(0, blueCars[carToAnimate - 2], WHEELS.blueCar);
         break;
 
       default:
@@ -527,7 +606,10 @@ nextQuestionBtn.addEventListener("click", () => {
 
 const time = new YUKA.Time();
 
-function animate() {
+function animate(t) {
+  if (Math.sin(t / 130) > 0) blinkMesh.material.color.setHex(0xdc2f02);
+  else blinkMesh.material.color.setHex(0xff8300);
+
   const delta = time.update().getDelta();
   entityManager.update(delta);
   renderer.render(scene, camera);

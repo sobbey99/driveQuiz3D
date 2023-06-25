@@ -1,4 +1,5 @@
 import { Path, Vector3 } from "yuka";
+import { Vector3 as Vec3, Audio, AudioListener, AudioLoader } from "three";
 
 const YELLOWVEHICLESPATHS = [];
 const BLUEVEHICLESPATHS = [];
@@ -159,9 +160,62 @@ const ANSWERSTEXT = [
   },
 ];
 
+const WHEELS = {
+  yellowCar: {
+    frontRight: "SUV_FrontRightWheel",
+    frontLeft: "SUV_FrontLeftWheel",
+    back: "SUV_BackWheels",
+  },
+  redCar: {
+    frontRight: "NormalCar1_FrontRightWheel",
+    frontLeft: "NormalCar1_FrontLeftWheel",
+    back: "NormalCar1_BackWheels",
+  },
+  blueCar: {
+    frontRight: "SportsCar_FrontRightWheel",
+    frontLeft: "SportsCar_FrontLeftWheel",
+    back: "SportsCar_BackWheels",
+  },
+};
+
+const BLINKINGLIGHTS = {
+  yellow: {
+    left: {
+      front: new Vec3(0.83, 0.66, 1.76),
+      back: new Vec3(0.76, 0.83, -1.68),
+    },
+    right: {
+      front: new Vec3(-0.83, 0.66, 1.76),
+      back: new Vec3(-0.76, 0.83, -1.68),
+    },
+  },
+  red: {
+    left: {
+      front: new Vec3(0.72, 0.48, 1.86),
+      back: new Vec3(0.68, 0.6, -1.8),
+    },
+    right: {
+      front: new Vec3(-0.72, 0.48, 1.86),
+      back: new Vec3(-0.68, 0.6, -1.8),
+    },
+  },
+  blue: {
+    left: {
+      front: new Vec3(0.72, 0.45, 1.64),
+      back: new Vec3(0.62, 0.66, -1.68),
+    },
+    right: {
+      front: new Vec3(-0.72, 0.45, 1.64),
+      back: new Vec3(-0.62, 0.66, -1.68),
+    },
+  },
+};
+
 export {
   YELLOWVEHICLESPATHS,
   BLUEVEHICLESPATHS,
   REDVEHICLESPATHS,
   ANSWERSTEXT,
+  WHEELS,
+  BLINKINGLIGHTS,
 };

@@ -597,6 +597,11 @@ const yellowCars = [];
 const redCars = [];
 const blueCars = [];
 let carToAnimate = 0;
+const blinkGeo = new _three.SphereGeometry(0.1);
+const blinkMat = new _three.MeshBasicMaterial({
+    color: 0xff8300
+});
+const blinkMesh = new _three.Mesh(blinkGeo, blinkMat);
 const renderer = new _three.WebGLRenderer({
     antialias: true
 });
@@ -648,7 +653,15 @@ camera.lookAt(scene.position);
 function sync(entity, renderComponent) {
     renderComponent.matrix.copy(entity.worldMatrix);
 }
-function createCarV(model, path, entityManager, yRotation) {
+function createBlinkingLight(group, position) {
+    const bClone1 = blinkMesh.clone();
+    bClone1.position.copy(position.front);
+    group.add(bClone1);
+    const bClone2 = blinkMesh.clone();
+    bClone2.position.copy(position.back);
+    group.add(bClone2);
+}
+function createCarV(model, path, entityManager, yRotation, blinkingLight) {
     const group = new _three.Group();
     scene.add(group);
     group.matrixAutoUpdate = false;
@@ -666,40 +679,41 @@ function createCarV(model, path, entityManager, yRotation) {
     v.steering.add(followPathBehavior);
     followPathBehavior.active = false;
     v.rotation.fromEuler(0, yRotation, 0);
+    if (blinkingLight) createBlinkingLight(group, blinkingLight);
     const vehicleAll = {
         vehicle: v,
         modelGroup: car
     };
     return vehicleAll;
 }
-loader.load("./assets/SUV.glb", (glb)=>{
+loader.load("./assets/SUV.glb", function(glb) {
     const model = glb.scene;
     const v1 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[0], entityManager, Math.PI);
-    const v2 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[1], entityManager, Math.PI);
-    const v3 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[2], entityManager, Math.PI / 2);
-    const v4 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[3], entityManager, Math.PI);
-    const v5 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[4], entityManager, -Math.PI / 2);
-    const v6 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[5], entityManager, Math.PI);
+    const v2 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[1], entityManager, Math.PI, (0, _constants.BLINKINGLIGHTS).yellow.right);
+    const v3 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[2], entityManager, Math.PI / 2, (0, _constants.BLINKINGLIGHTS).yellow.left);
+    const v4 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[3], entityManager, Math.PI, (0, _constants.BLINKINGLIGHTS).yellow.left);
+    const v5 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[4], entityManager, -Math.PI / 2, (0, _constants.BLINKINGLIGHTS).yellow.right);
+    const v6 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[5], entityManager, Math.PI, (0, _constants.BLINKINGLIGHTS).yellow.left);
     const v7 = createCarV(model, (0, _constants.YELLOWVEHICLESPATHS)[6], entityManager, -Math.PI / 2);
     yellowCars.push(v1, v2, v3, v4, v5, v6, v7);
 });
-loader.load("./assets/red.glb", (glb)=>{
+loader.load("./assets/red.glb", function(glb) {
     const model = glb.scene;
-    const v1 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[0], entityManager, 0);
-    const v2 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[1], entityManager, 0);
-    const v3 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[2], entityManager, -Math.PI / 2);
+    const v1 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[0], entityManager, 0, (0, _constants.BLINKINGLIGHTS).red.left);
+    const v2 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[1], entityManager, 0, (0, _constants.BLINKINGLIGHTS).red.left);
+    const v3 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[2], entityManager, -Math.PI / 2, (0, _constants.BLINKINGLIGHTS).red.right);
     const v4 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[3], entityManager, 0);
-    const v5 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[4], entityManager, Math.PI / 2);
-    const v6 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[5], entityManager, 0);
+    const v5 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[4], entityManager, Math.PI / 2, (0, _constants.BLINKINGLIGHTS).red.left);
+    const v6 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[5], entityManager, 0, (0, _constants.BLINKINGLIGHTS).red.right);
     const v7 = createCarV(model, (0, _constants.REDVEHICLESPATHS)[6], entityManager, Math.PI / 2);
     redCars.push(v1, v2, v3, v4, v5, v6, v7);
 });
-loader.load("./assets/blue.glb", (glb)=>{
+loader.load("./assets/blue.glb", function(glb) {
     const model = glb.scene;
     const v1 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[0], entityManager, Math.PI / 2);
     const v2 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[1], entityManager, Math.PI / 2);
     const v3 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[2], entityManager, 0);
-    const v4 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[3], entityManager, Math.PI / 2);
+    const v4 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[3], entityManager, Math.PI / 2, (0, _constants.BLINKINGLIGHTS).blue.left);
     const v7 = createCarV(model, (0, _constants.BLUEVEHICLESPATHS)[4], entityManager, Math.PI);
     blueCars.push(v1, v2, v3, v4, v7);
 });
@@ -771,6 +785,18 @@ function showAnswerSymbol(opt1, opt2, opt3) {
 function animateCar(delay, car, wheels, last) {
     setTimeout(()=>{
         car.vehicle.steering.behaviors[1].active = true;
+        (0, _gsapDefault.default).to(car.modelGroup.getObjectByName(wheels.frontRight).rotation, {
+            x: "+=60",
+            duration: 20
+        });
+        (0, _gsapDefault.default).to(car.modelGroup.getObjectByName(wheels.frontLeft).rotation, {
+            x: "+=60",
+            duration: 20
+        });
+        (0, _gsapDefault.default).to(car.modelGroup.getObjectByName(wheels.back).rotation, {
+            x: "+=60",
+            duration: 20
+        });
         if (last) carToAnimate++;
     }, delay);
 }
@@ -779,43 +805,43 @@ function chooseAnswer(option) {
         switch(carToAnimate){
             case 0:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
-                animateCar(3000, yellowCars[carToAnimate], null);
-                animateCar(5000, redCars[carToAnimate], null, true);
-                animateCar(0, blueCars[carToAnimate], null);
+                animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
+                animateCar(5000, redCars[carToAnimate], (0, _constants.WHEELS).redCar, true);
+                animateCar(0, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar);
                 break;
             case 1:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
-                animateCar(3000, yellowCars[carToAnimate], null);
-                animateCar(5000, redCars[carToAnimate], null, true);
-                animateCar(0, blueCars[carToAnimate], null);
+                animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
+                animateCar(5000, redCars[carToAnimate], (0, _constants.WHEELS).redCar, true);
+                animateCar(0, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar);
                 break;
             case 2:
                 showAnswerSymbol("incorrect", "incorrect", "correct");
-                animateCar(3000, yellowCars[carToAnimate], null);
-                animateCar(0, redCars[carToAnimate], null);
-                animateCar(5000, blueCars[carToAnimate], null, true);
+                animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
+                animateCar(0, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
+                animateCar(5000, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar, true);
                 break;
             case 3:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
-                animateCar(5000, yellowCars[carToAnimate], null, true);
-                animateCar(3000, redCars[carToAnimate], null);
-                animateCar(0, blueCars[carToAnimate], null);
+                animateCar(5000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar, true);
+                animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
+                animateCar(0, blueCars[carToAnimate], (0, _constants.WHEELS).blueCar);
                 break;
             case 4:
                 showAnswerSymbol("incorrect", "correct", "incorrect");
-                animateCar(0, yellowCars[carToAnimate], null);
-                animateCar(3000, redCars[carToAnimate], null, true);
+                animateCar(0, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar);
+                animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar, true);
                 break;
             case 5:
                 showAnswerSymbol("correct", "incorrect", "incorrect");
-                animateCar(0, yellowCars[carToAnimate], null, true);
-                animateCar(3000, redCars[carToAnimate], null);
+                animateCar(0, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar, true);
+                animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
                 break;
             case 6:
                 showAnswerSymbol("incorrect", "correct", "incorrect");
-                animateCar(3000, yellowCars[carToAnimate], null, true);
-                animateCar(3000, redCars[carToAnimate], null);
-                animateCar(0, blueCars[carToAnimate - 2], null);
+                animateCar(3000, yellowCars[carToAnimate], (0, _constants.WHEELS).yellowCar, true);
+                animateCar(3000, redCars[carToAnimate], (0, _constants.WHEELS).redCar);
+                animateCar(0, blueCars[carToAnimate - 2], (0, _constants.WHEELS).blueCar);
                 break;
             default:
                 break;
@@ -919,7 +945,9 @@ nextQuestionBtn.addEventListener("click", ()=>{
     }, "+=2.5");
 });
 const time = new _yuka.Time();
-function animate() {
+function animate(t) {
+    if (Math.sin(t / 130) > 0) blinkMesh.material.color.setHex(0xdc2f02);
+    else blinkMesh.material.color.setHex(0xff8300);
     const delta = time.update().getDelta();
     entityManager.update(delta);
     renderer.render(scene, camera);
@@ -51333,7 +51361,10 @@ parcelHelpers.export(exports, "YELLOWVEHICLESPATHS", ()=>YELLOWVEHICLESPATHS);
 parcelHelpers.export(exports, "BLUEVEHICLESPATHS", ()=>BLUEVEHICLESPATHS);
 parcelHelpers.export(exports, "REDVEHICLESPATHS", ()=>REDVEHICLESPATHS);
 parcelHelpers.export(exports, "ANSWERSTEXT", ()=>ANSWERSTEXT);
+parcelHelpers.export(exports, "WHEELS", ()=>WHEELS);
+parcelHelpers.export(exports, "BLINKINGLIGHTS", ()=>BLINKINGLIGHTS);
 var _yuka = require("yuka");
+var _three = require("three");
 const YELLOWVEHICLESPATHS = [];
 const BLUEVEHICLESPATHS = [];
 const REDVEHICLESPATHS = [];
@@ -51470,7 +51501,56 @@ const ANSWERSTEXT = [
         answer3: "The blue and red vehicles"
     }
 ];
+const WHEELS = {
+    yellowCar: {
+        frontRight: "SUV_FrontRightWheel",
+        frontLeft: "SUV_FrontLeftWheel",
+        back: "SUV_BackWheels"
+    },
+    redCar: {
+        frontRight: "NormalCar1_FrontRightWheel",
+        frontLeft: "NormalCar1_FrontLeftWheel",
+        back: "NormalCar1_BackWheels"
+    },
+    blueCar: {
+        frontRight: "SportsCar_FrontRightWheel",
+        frontLeft: "SportsCar_FrontLeftWheel",
+        back: "SportsCar_BackWheels"
+    }
+};
+const BLINKINGLIGHTS = {
+    yellow: {
+        left: {
+            front: new (0, _three.Vector3)(0.83, 0.66, 1.76),
+            back: new (0, _three.Vector3)(0.76, 0.83, -1.68)
+        },
+        right: {
+            front: new (0, _three.Vector3)(-0.83, 0.66, 1.76),
+            back: new (0, _three.Vector3)(-0.76, 0.83, -1.68)
+        }
+    },
+    red: {
+        left: {
+            front: new (0, _three.Vector3)(0.72, 0.48, 1.86),
+            back: new (0, _three.Vector3)(0.68, 0.6, -1.8)
+        },
+        right: {
+            front: new (0, _three.Vector3)(-0.72, 0.48, 1.86),
+            back: new (0, _three.Vector3)(-0.68, 0.6, -1.8)
+        }
+    },
+    blue: {
+        left: {
+            front: new (0, _three.Vector3)(0.72, 0.45, 1.64),
+            back: new (0, _three.Vector3)(0.62, 0.66, -1.68)
+        },
+        right: {
+            front: new (0, _three.Vector3)(-0.72, 0.45, 1.64),
+            back: new (0, _three.Vector3)(-0.62, 0.66, -1.68)
+        }
+    }
+};
 
-},{"yuka":"ead4k","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["4FhkU","goJYj"], "goJYj", "parcelRequire6fcf")
+},{"yuka":"ead4k","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","three":"ktPTu"}]},["4FhkU","goJYj"], "goJYj", "parcelRequire6fcf")
 
 //# sourceMappingURL=index.64a4978e.js.map
